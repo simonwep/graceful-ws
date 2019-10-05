@@ -5,12 +5,12 @@ module.exports = {
     mode: 'production',
 
     entry: {
-        'fancy-websocket': './src/index.ts'
+        'graceful-ws': './src/index.ts'
     },
 
     output: {
         filename: '[name].min.js',
-        library: 'FancyWebsocket',
+        library: 'GracefulWebSocket',
         libraryExport: 'default',
         libraryTarget: 'umd'
     },
@@ -36,7 +36,7 @@ module.exports = {
             filename: `[name].min.js.map`
         }),
         new webpack.BannerPlugin({
-            banner: `Fancy Websocket ${version} MIT | https://github.com/Simonwep/fancy-websocket`
+            banner: `Graceful WebSocket ${version} MIT | https://github.com/Simonwep/graceful-ws`
         })
     ]
 };

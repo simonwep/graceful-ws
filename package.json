@@ -1,13 +1,14 @@
 {
-    "name": "fancy-websocket",
+    "name": "graceful-ws",
     "version": "0.0.0",
-    "description": "",
-    "main": "./dist/fancy-websocket.min.js",
+    "description": "Graceful WebSocket wrapper with connection re-establishment capabilities.",
+    "main": "./dist/graceful-ws.min.js",
     "author": "Simon Reinisch <trash@reinisch.io>",
     "keywords": [],
     "license": "MIT",
     "scripts": {
-        "build": "webpack"
+        "build": "webpack",
+        "lint": "eslint ./src/**/*.ts"
     },
     "devDependencies": {
         "@typescript-eslint/eslint-plugin": "^2.3.2",

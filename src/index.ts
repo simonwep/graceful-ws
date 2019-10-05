@@ -15,6 +15,7 @@ export default class extends EventTarget {
     private readonly eventListeners: Array<EventListenerBuffer>;
     private _pingingTimeout: number;
     private _disconnectionTimeout: number;
+    private _closed: boolean;
 
     constructor(
         {
@@ -79,7 +80,11 @@ export default class extends EventTarget {
             }
         });
 
-        ws.addEventListener('close', () => this.restart());
+        ws.addEventListener('close', () => {
+            if (!this._closed) {
+                this.restart();
+            }
+        });
     }
 
     private restart(): void {
@@ -146,6 +151,7 @@ export default class extends EventTarget {
         const {websocket} = this;
 
         if (websocket) {
+            this._closed = true;
             websocket.close(code, reason);
         } else {
             throw 'Websocket isn\'t created yet.';

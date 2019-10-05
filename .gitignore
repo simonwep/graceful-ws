@@ -64,4 +64,5 @@ typings/
 
 # IntelliJ
 *.iml
-/.idea
+.idea
+.psd
