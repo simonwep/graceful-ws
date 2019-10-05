@@ -22,7 +22,7 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.js$/,
+                test: /\.ts$/,
                 use: [
                     'ts-loader',
                     'eslint-loader'

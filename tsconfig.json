@@ -1,9 +1,9 @@
 {
     "compilerOptions": {
+        "esModuleInterop": true,
         "noImplicitAny": true,
         "sourceMap": true,
-        "module": "es6",
-        "target": "es5",
-        "allowJs": true
+        "target": "es6",
+        "lib": ["dom", "es6"]
     }
 }
