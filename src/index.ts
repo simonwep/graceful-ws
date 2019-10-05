@@ -18,7 +18,7 @@ export default class extends EventTarget {
     private _closed: boolean;
 
     // Version
-    public static readonly version = '1.0.0';
+    public static readonly version = '1.0.1';
 
     constructor(
         {
