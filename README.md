@@ -8,13 +8,13 @@
   <a href="https://travis-ci.org/Simonwep/graceful-ws"><img
      alt="Build Status"
      src="https://img.shields.io/travis/Simonwep/graceful-ws.svg?style=popout-square"></a>
-  <a href="https://www.npmjs.com/package/@simonwep/graceful-ws"><img
+  <a href="https://www.npmjs.com/package/graceful-ws"><img
      alt="Download count"
-     src="https://img.shields.io/npm/dm/@simonwep/graceful-ws.svg?style=popout-square"></a>
+     src="https://img.shields.io/npm/dm/graceful-ws.svg?style=popout-square"></a>
   <img alt="No dependencies" src="https://img.shields.io/badge/dependencies-none-27ae60.svg?style=popout-square">
-  <a href="https://www.jsdelivr.com/package/npm/@simonwep/graceful-ws"><img
+  <a href="https://www.jsdelivr.com/package/npm/graceful-ws"><img
      alt="JSDelivr download count"
-     src="https://data.jsdelivr.com/v1/package/npm/@simonwep/graceful-ws/badge"></a>
+     src="https://data.jsdelivr.com/v1/package/npm/graceful-ws/badge"></a>
   <img alt="Current version"
        src="https://img.shields.io/github/tag/Simonwep/graceful-ws.svg?color=3498DB&label=version&style=flat-square">
   <a href="https://www.patreon.com/simonwep"><img
@@ -32,12 +32,12 @@ through sending a ping request every `n` milliseconds. It will automatically re-
 
 Install via npm:
 ```shell
-$ npm install @simonwep/graceful-ws
+$ npm install graceful-ws
 ```
 
 Install via yarn:
 ```shell
-$ yarn add @simonwep/graceful-ws
+$ yarn add graceful-ws
 ```
 
 Include directly via jsdelivr:
