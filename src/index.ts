@@ -17,6 +17,9 @@ export default class extends EventTarget {
     private _disconnectionTimeout: number;
     private _closed: boolean;
 
+    // Version
+    public static readonly version = '1.0.0';
+
     constructor(
         {
             ws,
