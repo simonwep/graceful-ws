@@ -1,3 +1,4 @@
+import {version}                                   from '../package.json';
 import {Communication, Options, WebsocketSettings} from './types';
 
 export default class extends EventTarget {
@@ -18,7 +19,7 @@ export default class extends EventTarget {
     private _closed: boolean;
 
     // Version
-    public static readonly version = '1.0.1';
+    public static readonly version = version;
 
     constructor(
         {
