@@ -58,7 +58,7 @@ const ws = new GracefulWebsocket({
         answer: '__PONG__'   // Expected response to the message
     },
     ws: {
-        url: 'my url' // See https://developer.mozilla.org/en-US/docs/Web/API/WebSocket/WebSocket#Parameters
+        url: 'my url', // See https://developer.mozilla.org/en-US/docs/Web/API/WebSocket/WebSocket#Parameters
         protocol: 'optional protols'  // Also see https://developer.mozilla.org/en-US/docs/Web/API/WebSocket/WebSocket#Parameters
     }
 });
@@ -68,10 +68,12 @@ const ws = new GracefulWebsocket({
 * `ws.addEventlistener(type, callback, options?)` _- Same as `WebSocket.prototype.addEventListener`._
 * `ws.removeEventListener(type, callback, options?)` _- Same as `WebSocket.prototype.removeEventListener`._
 * `ws.send(data)` _- Same as `WebSocket.prototype.send`, will throw an Error if there's currently no open connection._
-* `ws.close(code?)` _- Same as `WebSocket.prototype.close`, will throw an Error if there's currently no open connection. (It won't restart after this function got called!)_
+* `ws.close(code?)` _- Same as `WebSocket.prototype.close` emits a `close` event, will throw an Error if there's currently no open connection. (It won't restart after this function got called!)_
 
 All [websocket properties](https://developer.mozilla.org/en-US/docs/Web/API/WebSocket) (except eventlistener like `onclose`, `onmessage` etc...) are implemented by graceful-ws.
 If there's no active connection `null` will be returned.
 
 #### Events
-`graceful-ws` additionally emits events whenever the socket is connected (`connected` event) or the connection got interrupted (`disconnected` event). 
+* `connected` _- Emitted whenever a connection could be re-established._
+* `disconnected` _- Emitted whenever the `pingTimeout` threshold was exceeded or a network error occur._
+* `killed` _- Emitted if `.close()` was called which prevents further connection re-establishment._

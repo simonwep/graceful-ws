@@ -1,5 +1,10 @@
 import {Communication, EventListenerBuffer, Options, WebsocketSettings} from './types';
 
+const customEvents = [
+    'connected',
+    'disconnected',
+    'killed'
+];
 
 export default class extends EventTarget {
 
@@ -72,7 +77,7 @@ export default class extends EventTarget {
                 }, _pingTimeout);
             }, _pingInterval);
 
-            ws.dispatchEvent(new Event('connected'));
+            super.dispatchEvent(new Event('connected'));
         });
 
         ws.addEventListener('message', e => {
@@ -93,10 +98,10 @@ export default class extends EventTarget {
     }
 
     private restart(): void {
-        const {_websocket, _retryInterval, _pingingTimeoutId, _disconnectionTimeoutId} = this;
+        const {_retryInterval, _pingingTimeoutId, _disconnectionTimeoutId} = this;
 
         // Dispatch custom event
-        _websocket.dispatchEvent(new Event('disconnected'));
+        super.dispatchEvent(new Event('disconnected'));
 
         // Clear pinging and disconnected timeouts and intervals
         clearInterval(_pingingTimeoutId);
@@ -115,6 +120,10 @@ export default class extends EventTarget {
     public addEventListener(type: string, listener: EventListener | EventListenerObject | null, options?: boolean | AddEventListenerOptions): void {
         const {_websocket, _eventListeners} = this;
 
+        if (customEvents.includes(type)) {
+            super.addEventListener(type, listener, options);
+        }
+
         // If websocket is open and present, directly attach it
         if (_websocket && _websocket.readyState === _websocket.OPEN) {
             _websocket.addEventListener(type, listener, options);
@@ -127,9 +136,13 @@ export default class extends EventTarget {
     public removeEventListener(type: string, callback: EventListener | EventListenerObject | null, options?: EventListenerOptions | boolean): void {
         const {_websocket, _eventListeners} = this;
 
+        if (customEvents.includes(type)) {
+            super.removeEventListener(type, callback, options);
+        }
+
         // If websocket is open and present, directly unbind it
         if (_websocket && _websocket.readyState === _websocket.OPEN) {
-            _websocket.addEventListener(name, callback, options);
+            _websocket.addEventListener(type, callback, options);
         }
 
         // Find stored event-listener arguments
@@ -155,7 +168,9 @@ export default class extends EventTarget {
     public close(code?: number, reason?: string): void {
         const {_websocket, _pingingTimeoutId, _disconnectionTimeoutId, _retryIntervalId} = this;
 
-        if (_websocket) {
+        if (this._closed) {
+            throw 'Websocket already closed.';
+        } else if (_websocket) {
             this._closed = true;
 
             // Clear timeouts
@@ -165,6 +180,9 @@ export default class extends EventTarget {
 
             // Close websocket
             _websocket.close(code, reason);
+
+            // Dispatch close event
+            super.dispatchEvent(new Event('killed'));
         } else {
             throw 'Websocket isn\'t created yet.';
         }
