@@ -18,9 +18,3 @@ export type Options = {
     pingInterval: number;
     retryInterval: number;
 };
-
-export type EventListenerBuffer = [
-    string,
-    EventListener | EventListenerObject | null,
-    boolean | AddEventListenerOptions
-]
