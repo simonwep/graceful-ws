@@ -1,3 +1,4 @@
+const TerserPlugin = require('terser-webpack-plugin');
 const {version} = require('./package');
 const webpack = require('webpack');
 
@@ -38,5 +39,22 @@ module.exports = {
         new webpack.BannerPlugin({
             banner: `Graceful WebSocket ${version} MIT | https://github.com/Simonwep/graceful-ws`
         })
-    ]
+    ],
+
+    optimization: {
+        minimize: true,
+        minimizer: [
+            new TerserPlugin({
+                extractComments: false,
+                sourceMap: true,
+                terserOptions: {
+                    mangle: {
+                        properties: {
+                            regex: /^_/
+                        }
+                    }
+                }
+            })
+        ]
+    }
 };
