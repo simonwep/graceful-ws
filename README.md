@@ -71,4 +71,4 @@ const ws = new GracefulWebsocket({
 * `ws.close(code?)` _- Same as `WebSocket.prototype.close`, will throw an Error if there's currently no open connection. (It won't restart after this function got called!)_
 
 #### Events
-There's only one additional event named `disconnected` which gets dispatched after the client is disconnected. 
+`graceful-ws` additionally emits events whenever the socket is connected (`connected` event) or the connection got interrupted (`disconnected` event). 
