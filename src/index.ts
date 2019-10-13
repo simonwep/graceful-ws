@@ -14,8 +14,9 @@ export default class extends EventTarget {
 
     // Instance stuff
     private readonly _eventListeners: Array<EventListenerBuffer>;
-    private _pingingTimeout: number;
-    private _disconnectionTimeout: number;
+    private _disconnectionTimeoutId: number;
+    private _pingingTimeoutId: number;
+    private _retryIntervalId: number;
     private _closed: boolean;
 
     // Version
@@ -62,12 +63,12 @@ export default class extends EventTarget {
             }
 
             // Ping every 5s
-            this._pingingTimeout = setInterval(() => {
+            this._pingingTimeoutId = setInterval(() => {
                 ws.send(_com.message);
 
-                this._disconnectionTimeout = setTimeout(() => {
+                this._disconnectionTimeoutId = setTimeout(() => {
                     ws.close();
-                    clearInterval(this._pingingTimeout);
+                    clearInterval(this._pingingTimeoutId);
                 }, _pingTimeout);
             }, _pingInterval);
 
@@ -78,7 +79,7 @@ export default class extends EventTarget {
 
             // Check if message is the answer of __ping__ stop propagation if so
             if (e.data === _com.answer) {
-                clearTimeout(this._disconnectionTimeout);
+                clearTimeout(this._disconnectionTimeoutId);
                 e.preventDefault();
                 e.stopImmediatePropagation();
             }
@@ -92,19 +93,19 @@ export default class extends EventTarget {
     }
 
     private restart(): void {
-        const {_websocket, _retryInterval, _pingingTimeout, _disconnectionTimeout} = this;
+        const {_websocket, _retryInterval, _pingingTimeoutId, _disconnectionTimeoutId} = this;
 
         // Dispatch custom event
         _websocket.dispatchEvent(new Event('disconnected'));
 
         // Clear pinging and disconnected timeouts and intervals
-        clearInterval(_pingingTimeout);
-        clearTimeout(_disconnectionTimeout);
+        clearInterval(_pingingTimeoutId);
+        clearTimeout(_disconnectionTimeoutId);
 
         // Check every second if ethernet is available
-        const retry = setInterval(() => {
+        this._retryIntervalId = setInterval(() => {
             if (navigator.onLine) {
-                clearInterval(retry);
+                clearInterval(this._retryIntervalId);
                 this.start();
             }
         }, _retryInterval);
@@ -152,10 +153,17 @@ export default class extends EventTarget {
     }
 
     public close(code?: number, reason?: string): void {
-        const {_websocket} = this;
+        const {_websocket, _pingingTimeoutId, _disconnectionTimeoutId, _retryIntervalId} = this;
 
         if (_websocket) {
             this._closed = true;
+
+            // Clear timeouts
+            clearTimeout(_pingingTimeoutId);
+            clearTimeout(_disconnectionTimeoutId);
+            clearInterval(_retryIntervalId);
+
+            // Close websocket
             _websocket.close(code, reason);
         } else {
             throw 'Websocket isn\'t created yet.';
