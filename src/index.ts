@@ -1,18 +1,19 @@
 import {Communication, EventListenerBuffer, Options, WebsocketSettings} from './types';
 
+
 export default class extends EventTarget {
 
     // Settings
-    private readonly websocketSettings: WebsocketSettings;
-    private readonly com: Communication;
+    private readonly _websocketSettings: WebsocketSettings;
+    private readonly _com: Communication;
 
     private _pingInterval: number;
     private _pingTimeout: number;
     private _retryInterval: number;
-    private websocket: WebSocket | null;
+    private _websocket: WebSocket | null;
 
     // Instance stuff
-    private readonly eventListeners: Array<EventListenerBuffer>;
+    private readonly _eventListeners: Array<EventListenerBuffer>;
     private _pingingTimeout: number;
     private _disconnectionTimeout: number;
     private _closed: boolean;
@@ -41,28 +42,28 @@ export default class extends EventTarget {
             throw 'You must provide at least a websocket url.';
         }
 
-        this.com = com;
-        this.websocketSettings = ws;
-        this.websocket = null;
-        this.eventListeners = [];
+        this._com = com;
+        this._websocketSettings = ws;
+        this._websocket = null;
+        this._eventListeners = [];
         this.start();
     }
 
     private start(): void {
-        const {eventListeners, com, _pingInterval, _pingTimeout} = this;
-        const {url, protocol} = this.websocketSettings;
-        const ws = this.websocket = new WebSocket(url, protocol || []);
+        const {_eventListeners, _com, _pingInterval, _pingTimeout} = this;
+        const {url, protocol} = this._websocketSettings;
+        const ws = this._websocket = new WebSocket(url, protocol || []);
 
         ws.addEventListener('open', () => {
 
             // Add event listener
-            for (const args of eventListeners) {
+            for (const args of _eventListeners) {
                 ws.addEventListener(...args);
             }
 
             // Ping every 5s
             this._pingingTimeout = setInterval(() => {
-                ws.send(com.message);
+                ws.send(_com.message);
 
                 this._disconnectionTimeout = setTimeout(() => {
                     ws.close();
@@ -76,7 +77,7 @@ export default class extends EventTarget {
         ws.addEventListener('message', e => {
 
             // Check if message is the answer of __ping__ stop propagation if so
-            if (e.data === com.answer) {
+            if (e.data === _com.answer) {
                 clearTimeout(this._disconnectionTimeout);
                 e.preventDefault();
                 e.stopImmediatePropagation();
@@ -91,10 +92,10 @@ export default class extends EventTarget {
     }
 
     private restart(): void {
-        const {websocket, _retryInterval, _pingingTimeout, _disconnectionTimeout} = this;
+        const {_websocket, _retryInterval, _pingingTimeout, _disconnectionTimeout} = this;
 
         // Dispatch custom event
-        websocket.dispatchEvent(new Event('disconnected'));
+        _websocket.dispatchEvent(new Event('disconnected'));
 
         // Clear pinging and disconnected timeouts and intervals
         clearInterval(_pingingTimeout);
@@ -111,51 +112,51 @@ export default class extends EventTarget {
 
 
     public addEventListener(type: string, listener: EventListener | EventListenerObject | null, options?: boolean | AddEventListenerOptions): void {
-        const {websocket, eventListeners} = this;
+        const {_websocket, _eventListeners} = this;
 
         // If websocket is open and present, directly attach it
-        if (websocket && websocket.readyState === websocket.OPEN) {
-            websocket.addEventListener(type, listener, options);
+        if (_websocket && _websocket.readyState === _websocket.OPEN) {
+            _websocket.addEventListener(type, listener, options);
         }
 
         // Keep bound event listener
-        eventListeners.push([type, listener, options]);
+        _eventListeners.push([type, listener, options]);
     }
 
     public removeEventListener(type: string, callback: EventListener | EventListenerObject | null, options?: EventListenerOptions | boolean): void {
-        const {websocket, eventListeners} = this;
+        const {_websocket, _eventListeners} = this;
 
         // If websocket is open and present, directly unbind it
-        if (websocket && websocket.readyState === websocket.OPEN) {
-            websocket.addEventListener(name, callback, options);
+        if (_websocket && _websocket.readyState === _websocket.OPEN) {
+            _websocket.addEventListener(name, callback, options);
         }
 
         // Find stored event-listener arguments
-        const index = eventListeners.findIndex(([t, c, o]) => {
+        const index = _eventListeners.findIndex(([t, c, o]) => {
             return t === type && c === callback && o === options;
         });
 
         if (~index) {
-            eventListeners.splice(index, 1);
+            _eventListeners.splice(index, 1);
         }
     }
 
     public send(data: string | ArrayBufferLike | Blob | ArrayBufferView): void {
-        const {websocket} = this;
+        const {_websocket} = this;
 
-        if (websocket) {
-            websocket.send(data);
+        if (_websocket) {
+            _websocket.send(data);
         } else {
             throw 'Websocket isn\'t created yet.';
         }
     }
 
     public close(code?: number, reason?: string): void {
-        const {websocket} = this;
+        const {_websocket} = this;
 
-        if (websocket) {
+        if (_websocket) {
             this._closed = true;
-            websocket.close(code, reason);
+            _websocket.close(code, reason);
         } else {
             throw 'Websocket isn\'t created yet.';
         }
@@ -184,5 +185,30 @@ export default class extends EventTarget {
 
     set retryInterval(value: number) {
         this._retryInterval = value;
+    }
+
+    // Websocket properties (https://developer.mozilla.org/en-US/docs/Web/API/WebSocket)
+    get binaryType(): BinaryType | null {
+        return this._websocket ? this._websocket.binaryType : null;
+    }
+
+    get bufferedAmount(): number | null {
+        return this._websocket ? this._websocket.bufferedAmount : null;
+    }
+
+    get extensions(): string | null {
+        return this._websocket ? this._websocket.extensions : null;
+    }
+
+    get protocol(): string | null {
+        return this._websocket ? this._websocket.protocol : null;
+    }
+
+    get readyState(): number | null {
+        return this._websocket ? this._websocket.readyState : null;
+    }
+
+    get url(): string | null {
+        return this._websocket ? this._websocket.url : null;
     }
 }
