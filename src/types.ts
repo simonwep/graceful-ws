@@ -1,6 +1,6 @@
 export type WebsocketSettings = {
-    url: string;
     protocol?: string | Array<string>;
+    url: string;
 }
 
 export type Communication = {

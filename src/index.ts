@@ -38,7 +38,7 @@ export default class extends EventTarget {
         this._pingTimeout = pingTimeout;
         this._retryInterval = retryInterval;
 
-        if (!ws) {
+        if (!ws || !ws.url) {
             throw 'You must provide at least a websocket url.';
         }
 
@@ -102,7 +102,6 @@ export default class extends EventTarget {
             }
         }, _retryInterval);
     }
-
 
     public send(data: string | ArrayBufferLike | Blob | ArrayBufferView): void {
         const {_websocket} = this;
