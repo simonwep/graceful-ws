@@ -5,6 +5,7 @@
     "main": "./dist/graceful-ws.min.js",
     "author": "Simon Reinisch <trash@reinisch.io>",
     "license": "MIT",
+    "types": "./src/index.ts",
     "keywords": [
         "websocket"
     ],
