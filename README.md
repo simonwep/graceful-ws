@@ -50,27 +50,36 @@ Include directly via jsdelivr:
 #### Options
 ```js
 const ws = new GracefulWebsocket({
+    
+    // Timing settings
     pingTimeout: 2500,   // After how many ms a connection should be declared as disconnected
     pingInterval: 5000,  // Ping interval
     retryInterval: 1000, // Reconnect interval
+
+    // Ping message and expected answer
     com: {
         message: '__PING__', // Message which will be send to the server as question "hey, are you still there?"
         answer: '__PONG__'   // Expected response to the message
     },
+
+    /** 
+     * Websocket parameters. ws.url is required to initialize GracefulWebsocket, otherwise an error will be thrown.
+     * See https://developer.mozilla.org/en-US/docs/Web/API/WebSocket/WebSocket#Parameters
+     */
     ws: {
-        url: 'my url', // See https://developer.mozilla.org/en-US/docs/Web/API/WebSocket/WebSocket#Parameters
-        protocol: 'optional protols'  // Also see https://developer.mozilla.org/en-US/docs/Web/API/WebSocket/WebSocket#Parameters
+        url: 'ws://...', // WebSocket url
+        protocol: 'protocols...' // Optional protocols as string or array of strings
     }
 });
 ```
 
 #### Functions
-* `ws.addEventlistener(type, callback, options?)` _- Adds a new eventlistener, see [#events](#events)._
-* `ws.removeEventListener(type, callback, options?)` _- Removes an eventlistener,  see [#events](#events)._
+* `ws.addEventlistener(type, callback, options?)` _- Adds a new eventlistener, see [events](#events) section._
+* `ws.removeEventListener(type, callback, options?)` _- Removes an eventlistener,  see [events](#events) section._
 * `ws.send(data)` _- Same as `WebSocket.prototype.send`, will throw an Error if there's currently no open connection._
 * `ws.close(code?)` _- Same as `WebSocket.prototype.close` emits a `close` event, will throw an Error if there's currently no open connection. (It won't restart after this function got called!)_
 
-All [websocket properties](https://developer.mozilla.org/en-US/docs/Web/API/WebSocket) (except eventlistener like `onclose`, `onmessage` etc...) are implemented by graceful-ws.
+All [websocket properties](https://developer.mozilla.org/en-US/docs/Web/API/WebSocket) (except eventlistener like `onclose`, `onmessage` etc...) are implemented by graceful-ws. `add/removeEventListener` is handled by graceful-ws and cannot / shouldn't be accessed directly.
 If there's no active connection `null` will be returned.
 
 #### Events
