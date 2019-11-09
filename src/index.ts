@@ -39,7 +39,7 @@ export default class extends EventTarget {
         this._retryInterval = retryInterval;
 
         if (!ws || !ws.url) {
-            throw 'You must provide at least a websocket url.';
+            throw new Error('You must provide at least a websocket url.');
         }
 
         this._com = com;
@@ -109,7 +109,7 @@ export default class extends EventTarget {
         if (_websocket) {
             _websocket.send(data);
         } else {
-            throw 'Websocket isn\'t created yet.';
+            throw new Error('Websocket isn\'t created yet.');
         }
     }
 
@@ -117,7 +117,7 @@ export default class extends EventTarget {
         const {_websocket, _pingingTimeoutId, _disconnectionTimeoutId, _retryIntervalId} = this;
 
         if (this._closed) {
-            throw 'Websocket already closed.';
+            throw new Error('Websocket already closed.');
         } else if (_websocket) {
             this._closed = true;
 
@@ -132,10 +132,9 @@ export default class extends EventTarget {
             // Dispatch close event
             super.dispatchEvent(new CustomEvent('killed'));
         } else {
-            throw 'Websocket isn\'t created yet.';
+            throw new Error('Websocket isn\'t created yet.');
         }
     }
-
 
     get pingInterval(): number {
         return this._pingInterval;
