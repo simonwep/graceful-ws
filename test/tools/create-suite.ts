@@ -9,7 +9,7 @@ export const launchBrowser = async (): Promise<{
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
     await page.addScriptTag({
-        path: './dist/graceful-ws.min.js'
+        path: './lib/graceful-ws.min.js'
     });
 
     return {browser, page};

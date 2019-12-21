@@ -10,6 +10,7 @@ module.exports = {
     },
 
     output: {
+        path: `${__dirname}/lib`,
         filename: '[name].min.js',
         library: 'GracefulWebSocket',
         libraryExport: 'default',

@@ -27,7 +27,7 @@
     },
     "files": [
         "src",
-        "dist"
+        "lib"
     ],
     "devDependencies": {
         "@types/jest": "^24.0.24",
