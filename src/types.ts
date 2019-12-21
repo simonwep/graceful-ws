@@ -1,5 +1,5 @@
 export type WebsocketSettings = {
-    protocol?: string | Array<string>;
+    protocols?: string | Array<string>;
     url: string;
 }
 
