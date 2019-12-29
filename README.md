@@ -3,8 +3,8 @@
 </h3>
 
 <p align="center">
-  <img alt="gzip size" src="https://img.badgesize.io/https://raw.githubusercontent.com/Simonwep/graceful-ws/master/lib/graceful-ws.min.js?compression=gzip&style=flat-square">
-  <img alt="brotli size" src="https://img.badgesize.io/https://raw.githubusercontent.com/Simonwep/graceful-ws/master/lib/graceful-ws.min.js?compression=brotli&style=flat-square">
+  <img alt="gzip size" src="https://img.badgesize.io/https://cdn.jsdelivr.net/npm/graceful-ws@1.2.1/lib/graceful-ws.min.js?compression=gzip&style=flat-square">
+  <img alt="brotli size" src="https://img.badgesize.io/https://cdn.jsdelivr.net/npm/graceful-ws@1.2.1/lib/graceful-ws.min.js?compression=brotli&style=flat-square">
   <a href="https://travis-ci.org/Simonwep/graceful-ws"><img
      alt="Build Status"
      src="https://img.shields.io/travis/Simonwep/graceful-ws.svg?style=popout-square"></a>
