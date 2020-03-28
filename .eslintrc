@@ -8,7 +8,7 @@
         "eslint:recommended",
         "plugin:@typescript-eslint/eslint-recommended",
         "plugin:@typescript-eslint/recommended",
-        "problems"
+        "simon"
     ],
     "plugins": [
         "@typescript-eslint"
