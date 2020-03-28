@@ -1,6 +1,6 @@
 {
     "name": "graceful-ws",
-    "version": "1.2.1",
+    "version": "1.2.2",
     "description": "Graceful WebSocket wrapper with connection re-establishment capabilities.",
     "main": "./lib/graceful-ws.min.js",
     "author": "Simon Reinisch <trash@reinisch.io>",
