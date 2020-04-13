@@ -45,6 +45,12 @@ Include directly via jsdelivr:
 <script src="https://cdn.jsdelivr.net/npm/graceful-ws/lib/graceful-ws.min.js"></script>
 ```
 
+Using [JavaScript Modules](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules):
+
+````js
+import {...} from 'https://cdn.jsdelivr.net/npm/graceful-ws/lib/graceful-ws.min.mjs'
+````
+
 
 ## Usage
 

@@ -1,6 +1,5 @@
 import {Options, WebsocketSettings} from './types';
 
-declare const VERSION: string;
 export default class GracefulWebSocket extends EventTarget {
 
     // Version
