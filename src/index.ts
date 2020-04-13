@@ -1,15 +1,16 @@
-import {version} from '../package.json';
-import {Options} from './types';
+import {version}                    from '../package.json';
+import {Options, WebsocketSettings} from './types';
 
 export default class GracefulWebSocket extends EventTarget {
 
     // Version
     public static readonly version = version;
+
     // Default options
     private readonly _options: Options = {
         ws: {
-            url: null,
-            protocols: []
+            protocols: [],
+            url: ''
         },
         pingInterval: 5000,
         pingTimeout: 2500,
@@ -19,21 +20,27 @@ export default class GracefulWebSocket extends EventTarget {
             answer: '__PONG__'
         }
     };
+
     // Instance stuff
-    private _closed: boolean;
-    private _websocket: WebSocket | null;
+    private _closed = false;
+    private _websocket: WebSocket | null = null;
+
     // Timing id's
-    private _disconnectionTimeoutId: number;
-    private _pingingTimeoutId: number;
-    private _retryIntervalId: number;
+    private _disconnectionTimeoutId = 0;
+    private _pingingTimeoutId = 0;
+    private _retryIntervalId = 0;
 
-    constructor(url: Options | string, ...protocols: Array<string>) {
+    constructor(
+        url: (Partial<Options> & {ws: WebsocketSettings}) | string,
+        ...protocols: Array<string>
+    ) {
         super();
-        const {_options} = this;
 
+        const {_options} = this;
         if (typeof url === 'string') {
             _options.ws = {
-                url, protocols
+                url,
+                protocols
             };
         } else {
             Object.assign(_options, url);
