@@ -39,6 +39,10 @@ module.exports = {
         }),
         new webpack.BannerPlugin({
             banner: `Graceful WebSocket ${version} MIT | https://github.com/Simonwep/graceful-ws`
+        }),
+
+        new webpack.DefinePlugin({
+            'VERSION': JSON.stringify(version)
         })
     ],
 

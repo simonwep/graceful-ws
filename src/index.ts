@@ -1,10 +1,10 @@
-import {version}                    from '../package.json';
 import {Options, WebsocketSettings} from './types';
 
+declare const VERSION: string;
 export default class GracefulWebSocket extends EventTarget {
 
     // Version
-    public static readonly version = version;
+    public static readonly version = VERSION;
 
     // Default options
     private readonly _options: Options = {
