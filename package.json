@@ -20,6 +20,7 @@
     },
     "scripts": {
         "build": "rollup -c rollup.config.js",
+        "pretest": "npm run build",
         "test": "jest --runInBand --testTimeout=20000",
         "lint": "eslint ./src/**/*.ts ./test/**/*.ts",
         "lint:fix": "eslint ./src/**/*.ts ./test/**/*.ts --fix",
