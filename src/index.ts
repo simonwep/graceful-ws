@@ -1,9 +1,24 @@
 import {Options, WebsocketSettings} from './types';
 
-export default class GracefulWebSocket extends EventTarget {
+export default class GracefulWebSocket {
 
     // Version
     public static readonly version = VERSION;
+
+    /**
+     * I could extend / use EventTarget because it's best practice and made for
+     * exactly this purpose. ES6 classes are nearly 5 years old so the extend
+     * syntax + super() should work right? Nope, Safari is insanely stupid and
+     * doesn't even follow the very basic RFC's regarding extending EventTarget.
+     * Just because of this single browser doing whatever it wants and giving a shit about developers
+     * (not everyone wants to buy a god damn mac) we have to take care about event-handling by ourself.
+     * See https://stackoverflow.com/questions/36675693/eventtarget-interface-in-safari?noredirect=1&lq=1
+     */
+    /* eslint-disable no-invalid-this */
+    private readonly eventProxy = document.createElement('div');
+    public addEventListener = this.eventProxy.addEventListener.bind(this.eventProxy);
+    public dispatchEvent = this.eventProxy.dispatchEvent.bind(this.eventProxy);
+    public removeEventListener = this.eventProxy.removeEventListener.bind(this.eventProxy);
 
     // Default options
     private readonly _options: Options = {
@@ -33,8 +48,6 @@ export default class GracefulWebSocket extends EventTarget {
         url: (Partial<Options> & {ws: WebsocketSettings}) | string,
         ...protocols: Array<string>
     ) {
-        super();
-
         const {_options} = this;
         if (typeof url === 'string') {
             _options.ws = {
@@ -129,7 +142,7 @@ export default class GracefulWebSocket extends EventTarget {
             _websocket.close(code, reason);
 
             // Dispatch close event
-            super.dispatchEvent(new CustomEvent('killed'));
+            this.dispatchEvent(new CustomEvent('killed'));
         } else {
             throw new Error('Websocket isn\'t created yet.');
         }
@@ -140,7 +153,7 @@ export default class GracefulWebSocket extends EventTarget {
         const ws = this._websocket = new WebSocket(url, protocols || []);
 
         ws.addEventListener('open', () => {
-            super.dispatchEvent(new CustomEvent('connected'));
+            this.dispatchEvent(new CustomEvent('connected'));
 
             // Ping every 5s
             this._pingingTimeoutId = setInterval(() => {
@@ -159,7 +172,7 @@ export default class GracefulWebSocket extends EventTarget {
             if (e.data === com.answer) {
                 clearTimeout(this._disconnectionTimeoutId);
             } else {
-                super.dispatchEvent(new MessageEvent('message', e as EventInit));
+                this.dispatchEvent(new MessageEvent('message', e as EventInit));
             }
         });
 
@@ -173,7 +186,7 @@ export default class GracefulWebSocket extends EventTarget {
     private restart(): void {
 
         // Dispatch custom event
-        super.dispatchEvent(new CustomEvent('disconnected'));
+        this.dispatchEvent(new CustomEvent('disconnected'));
 
         // Clear pinging and disconnected timeouts and intervals
         clearInterval(this._pingingTimeoutId);
