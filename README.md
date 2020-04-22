@@ -26,7 +26,8 @@
 
 
 `graceful-ws` is a [WebSocket](https://developer.mozilla.org/en-US/docs/Web/API/WebSocket) - wrapper which tries to keep a connection alive
-through sending a ping request every `n` milliseconds. It will automatically re-bind all event-listeners after a re-establishment of the connection.
+by sending a ping request every `n` milliseconds. It will automatically re-bind all event-listeners after a re-establishment of the connection
+hence making the usage of it seamless.
 
 ## Getting Started
 
@@ -58,13 +59,13 @@ import {...} from 'https://cdn.jsdelivr.net/npm/graceful-ws/lib/graceful-ws.min.
 const ws = new GracefulWebSocket('ws://localhost:8080');
 
 // Connection-state related events
-ws.addEventListener('connected', () => console.log('[GWS] Connected'));
-ws.addEventListener('disconnected', () => console.log('[GWS] disconnected'));
-ws.addEventListener('killed', () => console.log('[GWS] killed'));
+ws.addEventListener('connected', () => console.log('[WS] Connected'));
+ws.addEventListener('disconnected', () => console.log('[WS] Disconnected'));
+ws.addEventListener('killed', () => console.log('[WS] Killed'));
 
 // Message event
 ws.addEventListener('message', e => {
-    console.log('[GWS] Message received: ', e.data);
+    console.log('[WS] Message received: ', e.data);
 });
 ```
 
@@ -76,7 +77,7 @@ const ws = new GracefulWebSocket({
     // Timing settings
     pingTimeout: 2500,   // After how many ms a connection should be declared as disconnected
     pingInterval: 5000,  // Ping interval
-    retryInterval: 1000, // Reconnect interval
+    retryInterval: 1000, // Reconnect interval in case of losing the connection
 
     // Ping message and expected answer
     com: {
@@ -99,7 +100,7 @@ const ws = new GracefulWebSocket({
 * `ws.addEventlistener(type, callback, options?)` _- Adds a new eventlistener, see [events](#events) section._
 * `ws.removeEventListener(type, callback, options?)` _- Removes an eventlistener,  see [events](#events) section._
 * `ws.send(data)` _- Same as `WebSocket.prototype.send`, will throw an Error if there's currently no open connection._
-* `ws.close(code?)` _- Same as `WebSocket.prototype.close` emits a `close` event, will throw an Error if there's currently no open connection. (It won't restart after this function got called!)_
+* `ws.close(code?)` _- Same as `WebSocket.prototype.close` emits a `close` event, will throw an Error if the connection is already closed. (It won't restart after this function got called!)_
 
 All [websocket properties](https://developer.mozilla.org/en-US/docs/Web/API/WebSocket) (except eventlistener like `onclose`, `onmessage` etc...) are implemented by graceful-ws. `add/removeEventListener` is handled by graceful-ws and cannot / shouldn't be accessed directly.
 If there's no active connection `null` will be returned.
@@ -107,6 +108,6 @@ If there's no active connection `null` will be returned.
 
 ### Events
 * `message` _- Websocket received a message._
-* `connected` _- Emitted whenever a connection got re-established._
-* `disconnected` _- Emitted whenever the `pingTimeout` threshold was exceeded or a network error occur._
+* `connected` _- Emitted whenever a connection gets re-established._
+* `disconnected` _- Emitted whenever the `pingTimeout` threshold is exceeded, or a network error occurs._
 * `killed` _- Emitted if `.close()` was called which prevents further connection re-establishment._
