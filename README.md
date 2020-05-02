@@ -1,5 +1,9 @@
 <h3 align="center">
-    <img src="https://user-images.githubusercontent.com/30767528/66257184-01a1c380-e796-11e9-9b2c-4908cfc22c95.png" alt="Logo">
+    <img src="https://user-images.githubusercontent.com/30767528/80870473-eef95980-8ca6-11ea-9218-8fe7c043af0b.png" width="500" alt="Logo">
+</h3>
+
+<h3 align="center">
+    Graceful WebSocket wrapper
 </h3>
 
 <p align="center">
