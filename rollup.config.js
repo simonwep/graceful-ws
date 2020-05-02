@@ -9,7 +9,14 @@ export default {
     input: 'src/index.ts',
     plugins: [
         ts(),
-        terser(),
+        terser({
+            mangle: {
+                keep_classnames: true,
+                properties: {
+                    regex: /^_/
+                }
+            }
+        }),
         replace({
             VERSION: JSON.stringify(pkg.version)
         })
