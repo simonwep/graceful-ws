@@ -38,6 +38,7 @@ export default class GracefulWebSocket {
     // Instance stuff
     private _closed = false;
     private _websocket: WebSocket | null = null;
+    private _connected = false;
 
     // Timing id's
     private _disconnectionTimeoutId = 0;
@@ -115,6 +116,11 @@ export default class GracefulWebSocket {
         return this._websocket ? this._websocket.url : null;
     }
 
+    // Custom properties
+    get connected(): boolean {
+        return this._connected;
+    }
+
     public send(data: string | ArrayBufferLike | Blob | ArrayBufferView): void {
         const {_websocket} = this;
 
@@ -154,6 +160,7 @@ export default class GracefulWebSocket {
 
         ws.addEventListener('open', () => {
             this.dispatchEvent(new CustomEvent('connected'));
+            this._connected = true;
 
             // Ping every 5s
             this._pingingTimeoutId = setInterval(() => {
@@ -184,9 +191,13 @@ export default class GracefulWebSocket {
     }
 
     private restart(): void {
+        const wasConnected = this._connected;
+        this._connected = false;
 
-        // Dispatch custom event
-        this.dispatchEvent(new CustomEvent('disconnected'));
+        // Dispatch custom event if it was connected previously
+        if (wasConnected) {
+            this.dispatchEvent(new CustomEvent('disconnected'));
+        }
 
         // Clear pinging and disconnected timeouts and intervals
         clearInterval(this._pingingTimeoutId);

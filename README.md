@@ -102,9 +102,14 @@ const ws = new GracefulWebSocket({
 * `ws.send(data)` _- Same as `WebSocket.prototype.send`, will throw an Error if there's currently no open connection._
 * `ws.close(code?)` _- Same as `WebSocket.prototype.close` emits a `close` event, will throw an Error if the connection is already closed. (It won't restart after this function got called!)_
 
-All [websocket properties](https://developer.mozilla.org/en-US/docs/Web/API/WebSocket) (except eventlistener like `onclose`, `onmessage` etc...) are implemented by graceful-ws. `add/removeEventListener` is handled by graceful-ws and cannot / shouldn't be accessed directly.
+All [websocket properties](https://developer.mozilla.org/en-US/docs/Web/API/WebSocket) (except eventlistener-related properties like `onclose`, `onmessage` etc...) are implemented by graceful-ws. `add/removeEventListener` is handled by graceful-ws and cannot / shouldn't be accessed directly.
 If there's no active connection `null` will be returned.
 
+### Properties
+* `ws.connected: boolean` _- `true` if a connection exists. (`getter`)_
+* `ws.pingInterval: number` _- Ping-interval option. (`getter` + `setter`)_
+* `ws.pingTimeout: number` _- Ping-timeout option.  (`getter` + `setter`)_
+* `ws.retryInterval: number` _- Retry-interval option.  (`getter` + `setter`)_
 
 ### Events
 * `message` _- Websocket received a message._
