@@ -15,10 +15,10 @@ export default class GracefulWebSocket {
      * See https://stackoverflow.com/questions/36675693/eventtarget-interface-in-safari?noredirect=1&lq=1
      */
     /* eslint-disable no-invalid-this */
-    private readonly eventProxy = document.createElement('div');
-    public addEventListener = this.eventProxy.addEventListener.bind(this.eventProxy);
-    public dispatchEvent = this.eventProxy.dispatchEvent.bind(this.eventProxy);
-    public removeEventListener = this.eventProxy.removeEventListener.bind(this.eventProxy);
+    private readonly _eventProxy = document.createElement('div');
+    public addEventListener = this._eventProxy.addEventListener.bind(this._eventProxy);
+    public dispatchEvent = this._eventProxy.dispatchEvent.bind(this._eventProxy);
+    public removeEventListener = this._eventProxy.removeEventListener.bind(this._eventProxy);
 
     // Default options
     private readonly _options: Options = {
