@@ -159,8 +159,10 @@ export default class GracefulWebSocket {
         const ws = this._websocket = new WebSocket(url, protocols || []);
 
         ws.addEventListener('open', () => {
-            this.dispatchEvent(new CustomEvent('connected'));
+
+            // Update connection state and dispatch event
             this._connected = true;
+            this.dispatchEvent(new CustomEvent('connected'));
 
             // Ping every 5s
             this._pingingTimeoutId = setInterval(() => {

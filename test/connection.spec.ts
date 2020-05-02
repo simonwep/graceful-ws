@@ -8,9 +8,15 @@ describe('Connection', () => {
         const socket = createSocket();
 
         await page.evaluate(`
-            new Promise(resolve => {
+            new Promise((resolve, reject) => {
                 const client = new GracefulWebSocket('ws://localhost:8088');
-                client.addEventListener('connected', resolve);
+                client.addEventListener('connected', () => {
+                    if (client.connected === true) {
+                        resolve();
+                    } else {
+                        reject();
+                    }
+                });
             });
         `);
 
