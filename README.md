@@ -7,8 +7,8 @@
 </h3>
 
 <p align="center">
-  <img alt="gzip size" src="https://img.badgesize.io/https://cdn.jsdelivr.net/npm/graceful-ws@1.2.1/lib/graceful-ws.min.js?compression=gzip&style=flat-square">
-  <img alt="brotli size" src="https://img.badgesize.io/https://cdn.jsdelivr.net/npm/graceful-ws@1.2.1/lib/graceful-ws.min.js?compression=brotli&style=flat-square">
+  <img alt="gzip size" src="https://img.badgesize.io/https://cdn.jsdelivr.net/npm/graceful-ws/lib/graceful-ws.min.js?compression=gzip&style=flat-square">
+  <img alt="brotli size" src="https://img.badgesize.io/https://cdn.jsdelivr.net/npm/graceful-ws/lib/graceful-ws.min.js?compression=brotli&style=flat-square">
   <a href="https://travis-ci.org/Simonwep/graceful-ws"><img
      alt="Build Status"
      src="https://img.shields.io/travis/Simonwep/graceful-ws.svg?style=popout-square"></a>
@@ -21,9 +21,9 @@
      src="https://data.jsdelivr.com/v1/package/npm/graceful-ws/badge"></a>
   <img alt="Current version"
        src="https://img.shields.io/github/tag/Simonwep/graceful-ws.svg?color=3498DB&label=version&style=flat-square">
-  <a href="https://www.patreon.com/simonwep"><img
+  <a href="https://github.com/sponsors/Simonwep"><img
      alt="Support me"
-     src="https://img.shields.io/badge/patreon-support-3498DB.svg?style=popout-square"></a>
+     src="https://img.shields.io/badge/github-support-3498DB.svg?style=popout-square"></a>
 </p>
 
 <br>
@@ -74,7 +74,7 @@ ws.addEventListener('message', e => {
 ```
 
 
-##### All options
+#### All options
 ```js
 const ws = new GracefulWebSocket({
 
