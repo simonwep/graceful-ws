@@ -132,17 +132,15 @@ export default class GracefulWebSocket {
     }
 
     public close(code?: number, reason?: string): void {
-        const {_websocket, _pingingTimeoutId, _disconnectionTimeoutId, _retryIntervalId} = this;
+        const {_websocket} = this;
 
         if (this._closed) {
             throw new Error('Websocket already closed.');
         } else if (_websocket) {
             this._closed = true;
 
-            // Clear timeouts
-            clearTimeout(_pingingTimeoutId);
-            clearTimeout(_disconnectionTimeoutId);
-            clearInterval(_retryIntervalId);
+            // Clear retry-interval if currently in a pending state
+            clearInterval(this._retryIntervalId);
 
             // Close websocket
             _websocket.close(code, reason);
@@ -170,7 +168,6 @@ export default class GracefulWebSocket {
 
                 this._disconnectionTimeoutId = setTimeout(() => {
                     ws.close();
-                    clearInterval(this._pingingTimeoutId);
                 }, pingTimeout) as unknown as number;
             }, pingInterval) as unknown as number;
         });
@@ -186,6 +183,12 @@ export default class GracefulWebSocket {
         });
 
         ws.addEventListener('close', () => {
+
+            // Clear timeouts
+            clearTimeout(this._disconnectionTimeoutId);
+            clearInterval(this._pingingTimeoutId);
+
+            // Restart if not manually closed
             if (!this._closed) {
                 this.restart();
             }
@@ -200,10 +203,6 @@ export default class GracefulWebSocket {
         if (wasConnected) {
             this.dispatchEvent(new CustomEvent('disconnected'));
         }
-
-        // Clear pinging and disconnected timeouts and intervals
-        clearInterval(this._pingingTimeoutId);
-        clearTimeout(this._disconnectionTimeoutId);
 
         // Check every second if ethernet is available
         this._retryIntervalId = setInterval(() => {
