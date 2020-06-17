@@ -11,7 +11,7 @@
   <img alt="brotli size" src="https://img.badgesize.io/https://cdn.jsdelivr.net/npm/graceful-ws/lib/graceful-ws.min.js?compression=brotli&style=flat-square">
   <a href="https://travis-ci.org/Simonwep/graceful-ws"><img
      alt="Build Status"
-     src="https://img.shields.io/travis/Simonwep/graceful-ws.svg?style=popout-square"></a>
+     src="https://img.shields.io/github/workflow/status/Simonwep/graceful-ws/CI?style=flat-square"></a>
   <a href="https://www.npmjs.com/package/graceful-ws"><img
      alt="Download count"
      src="https://img.shields.io/npm/dm/graceful-ws.svg?style=popout-square"></a>
