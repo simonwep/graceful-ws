@@ -9,7 +9,7 @@
 <p align="center">
   <img alt="gzip size" src="https://img.badgesize.io/https://cdn.jsdelivr.net/npm/graceful-ws/lib/graceful-ws.min.js?compression=gzip&style=flat-square">
   <img alt="brotli size" src="https://img.badgesize.io/https://cdn.jsdelivr.net/npm/graceful-ws/lib/graceful-ws.min.js?compression=brotli&style=flat-square">
-  <a href="https://travis-ci.org/Simonwep/graceful-ws"><img
+  <a href="https://github.com/Simonwep/graceful-ws/actions"><img
      alt="Build Status"
      src="https://img.shields.io/github/workflow/status/Simonwep/graceful-ws/CI?style=flat-square"></a>
   <a href="https://www.npmjs.com/package/graceful-ws"><img
