@@ -13,6 +13,9 @@
     "plugins": [
         "@typescript-eslint"
     ],
+    "globals": {
+        "VERSION": true
+    },
     "parserOptions": {
         "project": "./tsconfig.json",
         "sourceType": "module",

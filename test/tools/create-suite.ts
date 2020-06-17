@@ -1,6 +1,6 @@
 import puppeteer, {Browser, Page} from 'puppeteer';
-import {Server}                   from 'ws';
-import {Communication}            from '../../src/types';
+import {Server} from 'ws';
+import {Communication} from '../../src/types';
 
 export const launchBrowser = async (): Promise<{
     browser: Browser;

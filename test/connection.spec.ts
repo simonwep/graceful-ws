@@ -1,4 +1,4 @@
-import {Communication}               from '../src/types';
+import {Communication} from '../src/types';
 import {createSocket, launchBrowser} from './tools/create-suite';
 
 describe('Connection', () => {
