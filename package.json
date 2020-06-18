@@ -6,7 +6,7 @@
     "module": "./lib/graceful-ws.min.mjs",
     "author": "Simon Reinisch <trash@reinisch.io>",
     "license": "MIT",
-    "types": "./src/graceful-ws.min.d.ts",
+    "types": "./lib/graceful-ws.min.d.ts",
     "keywords": [
         "websocket"
     ],
