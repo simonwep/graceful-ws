@@ -16,9 +16,9 @@ export default class GracefulWebSocket {
      */
     /* eslint-disable no-invalid-this */
     private readonly _eventProxy = document.createElement('div');
-    public addEventListener = this._eventProxy.addEventListener.bind(this._eventProxy);
-    public dispatchEvent = this._eventProxy.dispatchEvent.bind(this._eventProxy);
-    public removeEventListener = this._eventProxy.removeEventListener.bind(this._eventProxy);
+    public addEventListener: WebSocket['addEventListener'] = this._eventProxy.addEventListener.bind(this._eventProxy);
+    public dispatchEvent: WebSocket['dispatchEvent'] = this._eventProxy.dispatchEvent.bind(this._eventProxy);
+    public removeEventListener: WebSocket['removeEventListener'] = this._eventProxy.removeEventListener.bind(this._eventProxy);
 
     // Default options
     private readonly _options: Options = {
