@@ -1,9 +1,10 @@
+import {describe, expect, test} from 'vitest';
 import {Communication} from '../src/types';
-import {createSocket, launchBrowser} from './tools/create-suite';
+import {createSocket, launchBrowser} from './utils';
 
 describe('Connection', () => {
 
-    it('Should successfully emit the "connected" event', async () => {
+    test('Should successfully emit the "connected" event', async () => {
         const {browser, page} = await launchBrowser();
         const socket = createSocket();
 
@@ -21,10 +22,10 @@ describe('Connection', () => {
         `);
 
         await browser.close();
-        socket.close();
+        await socket.close();
     });
 
-    it('Should emit the "disconnected" event if the server is not longer reachable', async () => {
+    test('Should emit the "disconnected" event if the server is not longer reachable', async () => {
         const {browser, page} = await launchBrowser();
         const socket = createSocket();
 
@@ -36,22 +37,25 @@ describe('Connection', () => {
         await page.evaluate(`
             new Promise(resolve => {
                 const client = new GracefulWebSocket({
-                    pingInterval: 500,
-                    pingTimeout: 1000,
-                    ws: {
-                        url: 'ws://localhost:8088'
-                    }
+                    pingInterval: 250,
+                    pingTimeout: 500,
+                    ws: { url: 'ws://localhost:8088' }
                 });
 
-                client.addEventListener('disconnected', resolve);
-                setTimeout(() => closeServer(), 2000);
+                let closeServerPromise;
+                client.addEventListener('disconnected', () => {
+                    closeServerPromise.then(resolve);
+                });
+ 
+                setTimeout(() => closeServerPromise = closeServer(), 1000);
             });
         `);
 
         await browser.close();
+        await socket.close();
     });
 
-    it('Should re-establish a connection', async () => {
+    test('Should re-establish a connection', async () => {
         const {browser, page} = await launchBrowser();
         let socket = createSocket();
 
@@ -71,8 +75,11 @@ describe('Connection', () => {
         // Should fire disconnect event
         await page.evaluate(`
             new Promise(resolve => {
-                client.addEventListener('disconnected', resolve, {once: true});
-                closeServer();
+                let closeServerPromise;
+                client.addEventListener('disconnected', () => {
+                    closeServerPromise.then(resolve);
+                }, {once: true});
+                closeServerPromise = closeServer();
             });
         `);
 
@@ -90,10 +97,10 @@ describe('Connection', () => {
         `);
 
         await browser.close();
-        socket.close();
+        await socket.close();
     });
 
-    it('Should accept custom ping / pong messages', async () => {
+    test('Should accept custom ping / pong messages', async () => {
         const com: Communication = {
             message: 'Hello?',
             answer: 'Whazzup?'
@@ -122,7 +129,7 @@ describe('Connection', () => {
 
         expect(res).toBe('ok');
         await browser.close();
-        socket.close();
+        await socket.close();
     });
 });
 

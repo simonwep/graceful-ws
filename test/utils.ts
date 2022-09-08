@@ -1,6 +1,6 @@
 import puppeteer, {Browser, Page} from 'puppeteer';
-import {Server} from 'ws';
-import {Communication} from '../../src/types';
+import {WebSocketServer} from 'ws';
+import {Communication} from '../src/types';
 
 export const launchBrowser = async (): Promise<{
     browser: Browser;
@@ -18,18 +18,24 @@ export const launchBrowser = async (): Promise<{
 export const createSocket = (com: Communication = {
     answer: '__PONG__',
     message: '__PING__'
-}): Server => {
-    const socket = new Server({port: 8088});
+}) => {
+    const socket = new WebSocketServer({port: 8088});
 
     socket.addListener('connection', client => {
         client.on('message', data => {
-            if (data === com.message) {
+            if (data.toString() === com.message) {
                 client.send(com.answer);
             }
         });
     });
 
-    return socket;
+    return {
+        close: () => new Promise<void>((resolve, reject) => {
+            socket.on('close', resolve);
+            socket.clients.forEach(client => client.close());
+            socket.close(err => err ? reject(err) : undefined);
+        })
+    };
 };
 
 

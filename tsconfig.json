@@ -3,12 +3,12 @@
         "declaration": true,
         "declarationDir": "lib",
         "resolveJsonModule": true,
-        "moduleResolution": "node",
+        "moduleResolution": "Node",
         "esModuleInterop": true,
         "noImplicitAny": true,
         "sourceMap": true,
-        "target": "es6",
+        "target": "ESNext",
         "strict": true,
-        "lib": ["dom", "es7"]
+        "lib": ["DOM", "ESNext"]
     }
 }

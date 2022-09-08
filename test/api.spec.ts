@@ -1,8 +1,9 @@
-import {createSocket, launchBrowser} from './tools/create-suite';
+import {describe, test} from 'vitest';
+import {createSocket, launchBrowser} from './utils';
 
 describe('API', () => {
 
-    it('Should emit the "killed" event on close', async () => {
+    test('Should emit the "killed" event on close', async () => {
         const {browser, page} = await launchBrowser();
         const socket = createSocket();
 
@@ -16,10 +17,10 @@ describe('API', () => {
         `);
 
         await browser.close();
-        socket.close();
+        await socket.close();
     });
 
-    it('Should return false for isConnected if it\'s disconnected', async () => {
+    test('Should return false for isConnected if it\'s disconnected', async () => {
         const {browser, page} = await launchBrowser();
         const socket = createSocket();
 
@@ -29,7 +30,7 @@ describe('API', () => {
         );
 
         await page.evaluate(`
-            new Promise((resolve, reject) => {
+             new Promise((resolve, reject) => {
                 const client = new GracefulWebSocket({
                     pingInterval: 250,
                     pingTimeout: 500,
@@ -38,15 +39,16 @@ describe('API', () => {
                     }
                 });
 
+                let closeServerPromise;
                 client.addEventListener('disconnected', () => {
                     if (client.connected === false) {
-                        resolve();
+                        closeServerPromise.then(resolve);
                     } else {
                         reject();
                     }
                 });
 
-                setTimeout(() => closeServer(), 2000);
+                setTimeout(() => closeServerPromise = closeServer(), 2000);
             });
         `);
 

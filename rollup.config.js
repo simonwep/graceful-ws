@@ -1,14 +1,14 @@
 import {terser} from 'rollup-plugin-terser';
-import ts       from '@wessberg/rollup-plugin-ts';
-import replace  from '@rollup/plugin-replace';
-import pkg      from './package.json';
+import replace from '@rollup/plugin-replace';
+import pkg from './package.json';
+import typescript from '@rollup/plugin-typescript';
 
 const banner = `/*! Graceful WebSocket ${pkg.version} MIT | https://github.com/Simonwep/graceful-ws */`;
 
 export default {
     input: 'src/index.ts',
     plugins: [
-        ts(),
+        typescript(),
         terser({
             mangle: {
                 keep_classnames: true,
@@ -18,7 +18,8 @@ export default {
             }
         }),
         replace({
-            VERSION: JSON.stringify(pkg.version)
+            VERSION: JSON.stringify(pkg.version),
+            preventAssignment: true
         })
     ],
     output: [
